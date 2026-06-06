@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KRIS DIAMOND STORE | Landing</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    /* Index-only styling to keep layout different from beranda */
+
+    /* Catalog: make it look more premium */
+    .catalog-card { position: relative; overflow: hidden; }
+    .catalog-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: radial-gradient(600px 200px at 20% 0%, rgba(124,58,237,0.35), transparent 60%),
+                  radial-gradient(420px 180px at 85% 20%, rgba(37,99,235,0.25), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+    .catalog-card > * { position: relative; }
+
+    .catalog-item {
+      transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+      cursor: pointer;
+    }
+    .catalog-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(167,139,250,0.55);
+    }
+
+    .catalog-item .badge {
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.35), rgba(37,99,235,0.25));
+      border: 1px solid rgba(167,139,250,0.45);
+      padding: 6px 10px;
+      color: var(--text);
+      font-weight: 900;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .catalog-item .left b {
+      letter-spacing: 0.2px;
+    }
+
+    .index-only .hero-index { padding: 18px 0 10px; }
+    .index-only .banner-slider { position: relative; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.03); }
+    .index-only .banner-slide { display: none; }
+    .index-only .banner-slide.is-active { display: block; }
+    .index-only .banner-slide img { width: 100%; height: 220px; object-fit: cover; display: block; }
+    .index-only .banner-caption { position: absolute; left: 14px; bottom: 14px; right: 14px; display: flex; align-items:center; justify-content: space-between; gap: 12px; }
+    .index-only .banner-caption .cap-left, .index-only .banner-caption .cap-center { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); padding: 12px 12px; border-radius: 14px; }
+    .index-only .banner-caption .cap-center { margin: 0 auto; text-align: center; }
+    .index-only .banner-caption h1 { margin: 0 0 6px; font-size: clamp(20px, 3vw, 30px); }
+    .index-only .banner-caption p { margin: 0; color: rgba(234,240,255,0.85); font-size: 14px; }
+    .index-only .banner-controls { position:absolute; top: 50%; left: 10px; right: 10px; display:flex; align-items:center; justify-content: space-between; pointer-events:none; }
+    .index-only .banner-btn { pointer-events:auto; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: var(--text); width: 40px; height: 40px; border-radius: 12px; cursor:pointer; font-size: 20px; font-weight: 900; }
+    .index-only .banner-dots { display:flex; gap: 8px; justify-content:center; margin-top: 10px; }
+    .index-only .banner-dot { width: 10px; height: 10px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); cursor:pointer; }
+    .index-only .banner-dot.is-active { background: linear-gradient(135deg, rgba(124,58,237,0.6), rgba(37,99,235,0.35)); border-color: rgba(167,139,250,0.7); }
+
+    .index-only .recommend-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .index-only .recommend-card { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 18px; padding: 14px; }
+    .index-only .recommend-card h3 { margin: 8px 0 6px; font-size: 16px; }
+    .index-only .recommend-card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .index-only .recommend-card img { width: 100%; height: 95px; object-fit: contain; display:block; }
+
+    /* Catalog (not using #productGrid) */
+    .index-only .catalog-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+
+    .index-only .catalog-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+
+    .index-only .catalog-card h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      letter-spacing: 0.2px;
+      color: var(--text);
+    }
+
+    .index-only .catalog-list { display:flex; flex-direction: column; gap: 10px; }
+
+    .index-only .catalog-item {
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-decoration: none;
+      outline: none;
+    }
+
+    .index-only .catalog-item .left { display:flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .index-only .catalog-item b {
+      font-size: 15px;
+      letter-spacing: 0.2px;
+      color: var(--text);
+    }
+
+    .index-only .catalog-item span {
+      font-size: 13px;
+      color: rgba(234,240,255,0.78);
+      line-height: 1.25;
+    }
+
+    .index-only .catalog-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(167,139,250,0.65);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.28);
+    }
+
+    .index-only .catalog-item:focus-visible {
+      box-shadow: 0 0 0 3px rgba(167,139,250,0.35);
+      border-color: rgba(167,139,250,0.85);
+    }
+
+    .index-only .catalog-item .badge {
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-weight: 950;
+      font-size: 12px;
+      letter-spacing: 0.2px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.40), rgba(37,99,235,0.26));
+      border: 1px solid rgba(167,139,250,0.55);
+      color: var(--text);
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+
+    @media (max-width: 980px) {
+      .index-only .recommend-grid { grid-template-columns: 1fr; }
+      .index-only .catalog-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="index-only">
+  <header class="site-header">
+    <div class="container header-inner">
+<a class="brand" href="./beranda.html">KRIS DIAMOND STORE</a>
+
+      <nav class="nav">
+        <a href="./beranda.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./testimoni.html">Testimoni</a>
+
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+        <a href="./checkout.html" class="btn btn-primary">Checkout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+      <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./beranda.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./testimoni.html">Testimoni</a>
+
+      <a href="./login.html">Login</a>
+      <a href="./checkout.html">Checkout</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Banner slider Free Fire (placeholder gambar) -->
+    <section class="container hero-index">
+      <div class="banner-slider" id="indexBanner">
+        <div class="banner-slide is-active" data-banner="0">
+          <img src="./images/slide-ff-1.png" alt="Promo Free Fire" onerror="this.style.display='none'" />
+        </div>
+        <div class="banner-slide" data-banner="1">
+          <img src="./images/slide-ml-1.png" alt="Promo Mobile Legends" onerror="this.style.display='none'" />
+        </div>
+
+        <div class="banner-caption" aria-hidden="true">
+          <div class="cap-center" data-caption>
+            <h1 id="indexBannerTitle" data-edit-key="indexBannerTitle">Isi Diamond Free Fire</h1>
+            <p id="indexBannerSub" data-edit-key="indexBannerSub">Cepat • Aman • Terpercaya</p>
+
+          </div>
+          <a class="btn btn-primary" id="indexBannerCTA" href="./products.html#ff">Beli Sekarang</a>
+        </div>
+
+
+        <div class="banner-controls">
+          <button class="banner-btn" type="button" aria-label="Sebelumnya" id="indexBannerPrev">‹</button>
+          <button class="banner-btn" type="button" aria-label="Berikutnya" id="indexBannerNext">›</button>
+        </div>
+      </div>
+
+      <div class="banner-dots" id="indexBannerDots" aria-label="Pilih slide"></div>
+    </section>
+
+    <!-- Rekomendasi game -->
+    <section class="container section" style="padding-top:22px;">
+      <h2 class="section-title">Rekomendasi Game</h2>
+      <div class="recommend-grid">
+        <div class="recommend-card">
+          <img src="./images/ff.png" alt="Free Fire" onerror="this.style.display='none'" />
+          <h3>Free Fire</h3>
+          <p>Pilih paket diamond Free Fire terbaik dan checkout.</p>
+          <div style="margin-top:12px;">
+            <a class="btn btn-ghost" href="./products.html#ff">Lihat Paket FF</a>
+          </div>
+        </div>
+
+        <div class="recommend-card">
+          <img src="./images/ml.png" alt="Mobile Legends" onerror="this.style.display='none'" />
+          <h3>Mobile Legends</h3>
+          <p>Paket diamond ML dengan proses cepat.</p>
+          <div style="margin-top:12px;">
+            <a class="btn btn-ghost" href="./products.html#ml">Lihat Paket ML</a>
+          </div>
+        </div>
+
+        <div class="recommend-card">
+          <img src="./images/hero-diamond.png" alt="Promo" onerror="this.style.display='none'" />
+          <h3>Promo Pilihan</h3>
+          <p>Scan kebutuhanmu, langsung order dari katalog.</p>
+          <div style="margin-top:12px;">
+            <a class="btn btn-primary" href="./beranda.html">Buka Katalog</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Katalog game (tidak bergantung #productGrid) -->
+    <section class="container section">
+      <h2 class="section-title">Katalog Game Pilihan</h2>
+      <div class="catalog-grid">
+        <div class="catalog-card">
+          <h3>Free Fire</h3>
+          <div class="catalog-list">
+            <a class="catalog-item" href="./products.html#ff" aria-label="Free Fire Paket 1">
+              <div class="left">
+                <b>Paket Diamond</b>
+                <span>Mulai dari pilihan populer</span>
+              </div>
+              <span class="badge">Order</span>
+            </a>
+            <a class="catalog-item" href="./products.html#ff" aria-label="Free Fire Paket 2">
+              <div class="left">
+                <b>Paket Diamond</b>
+                <span>Nominal sesuai kebutuhan</span>
+              </div>
+              <span class="badge">Order</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="catalog-card">
+          <h3>Mobile Legends</h3>
+          <div class="catalog-list">
+            <a class="catalog-item" href="./products.html#ml" aria-label="Mobile Legends Paket 1">
+              <div class="left">
+                <b>Paket Diamond</b>
+                <span>Mulai dari pilihan populer</span>
+              </div>
+              <span class="badge">Order</span>
+            </a>
+            <a class="catalog-item" href="./products.html#ml" aria-label="Mobile Legends Paket 2">
+              <div class="left">
+                <b>Paket Diamond</b>
+                <span>Bonus sesuai paket</span>
+              </div>
+              <span class="badge">Order</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+
+        <div>Email: <a href="mailto:krisdesign0@gmail.com">krisdesign0@gmail.com</a></div>
+
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const slider = document.getElementById('indexBanner');
+      if (!slider) return;
+      const slides = Array.from(slider.querySelectorAll('.banner-slide'));
+      const prevBtn = document.getElementById('indexBannerPrev');
+      const nextBtn = document.getElementById('indexBannerNext');
+      const dotsWrap = document.getElementById('indexBannerDots');
+      if (!slides.length || !prevBtn || !nextBtn || !dotsWrap) return;
+
+      let idx = 0;
+      const CAPTIONS = [
+        { title: 'Isi Diamond Free Fire', sub: 'Cepat • Aman • Terpercaya', href: './products.html#ff' },
+        { title: 'Isi Diamond Mobile Legends', sub: 'Cepat • Aman • Terpercaya', href: './products.html#ml' },
+      ];
+      const titleEl = document.getElementById('indexBannerTitle');
+      const subEl = document.getElementById('indexBannerSub');
+      const ctaEl = document.getElementById('indexBannerCTA');
+
+      function setActive(i){
+        const count = slides.length;
+        idx = (i + count) % count;
+        slides.forEach((s,n)=>s.classList.toggle('is-active', n===idx));
+        const dots = Array.from(dotsWrap.querySelectorAll('.banner-dot'));
+        dots.forEach((d,n)=>d.classList.toggle('is-active', n===idx));
+
+        const cap = CAPTIONS[idx];
+        if (titleEl) titleEl.textContent = cap.title;
+        if (subEl) subEl.textContent = cap.sub;
+        if (ctaEl) ctaEl.href = cap.href;
+      }
+
+      dotsWrap.innerHTML = slides.map((_,n)=>`<button class="banner-dot${n===0?' is-active':''}" type="button" aria-label="Banner ${n+1}" data-dot="${n}"></button>`).join('');
+      dotsWrap.addEventListener('click', (e)=>{
+        const btn = e.target.closest('[data-dot]');
+        if (!btn) return;
+        setActive(Number(btn.getAttribute('data-dot')));
+      });
+
+      prevBtn.addEventListener('click', ()=>setActive(idx-1));
+      nextBtn.addEventListener('click', ()=>setActive(idx+1));
+
+      // autoplay + auto/manual
+      let timer = setInterval(()=>setActive(idx+1), 5500);
+      slider.addEventListener('mouseenter', ()=>clearInterval(timer));
+      slider.addEventListener('mouseleave', ()=>{ timer = setInterval(()=>setActive(idx+1), 5500); });
+
+      // manual buttons reset timer to keep behavior consistent
+      prevBtn.addEventListener('click', ()=>{ clearInterval(timer); timer = setInterval(()=>setActive(idx+1), 5500); });
+      nextBtn.addEventListener('click', ()=>{ clearInterval(timer); timer = setInterval(()=>setActive(idx+1), 5500); });
+
+      // ensure caption correct on first load
+      setActive(0);
+    })();
+  </script>
+
+
+
+  <script src="./script.js"></script>
+</body>
+</html>
+
+
+

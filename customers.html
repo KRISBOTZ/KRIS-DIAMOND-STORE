@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Akun Pelanggan | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">KRIS DIAMOND STORE</a>
+
+      <nav class="nav">
+        <a href="./index.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./faq.html" class="btn btn-ghost">FAQ</a>
+        <a href="./sound.html" class="btn btn-ghost">Sound</a>
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+        <a href="./admin.html" class="btn btn-primary">Admin</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./index.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./faq.html">FAQ</a>
+
+      <a href="./login.html">Login</a>
+      <a href="./admin.html">Admin</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="page-header">
+        <div>
+          <h1>Daftar Akun Pelanggan</h1>
+          <p>Lihat akun pelanggan yang tersimpan di <code>localStorage</code>.</p>
+        </div>
+        <div class="page-actions" style="min-width:unset; gap:10px; flex-wrap:wrap;">
+          <a class="btn btn-ghost" href="./admin.html">Kembali ke Admin</a>
+        </div>
+      </div>
+
+      <div class="checkout-grid" style="grid-template-columns:1fr;">
+        <div class="checkout-card">
+          <h2 class="section-title" style="margin-top:0">Akun Pelanggan</h2>
+          <div class="divider" style="margin:12px 0"></div>
+
+          <div id="adminMsg" class="msg" role="status" aria-live="polite" style="display:none"></div>
+          <div class="cart-items" id="customersList"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+        <a href="./faq.html">FAQ</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+        <div>Email: <a href="mailto:krisdesign0@gmail.com">krisdesign0@gmail.com</a></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script src="./script.js"></script>
+  <script>
+    const LS_ADMIN_SESSION_KEY = 'diamond_store_admin_session_v1';
+    const LS_USERS_KEY = 'diamond_store_users_v1';
+
+    function getUsers() {
+      try {
+        return JSON.parse(localStorage.getItem(LS_USERS_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function renderCustomers() {
+      const box = document.getElementById('customersList');
+      if (!box) return;
+
+      const users = getUsers();
+      const customers = users.filter(u => (u.role || 'user') !== 'admin');
+
+      if (!customers.length) {
+        box.innerHTML = '<div class="msg">Belum ada akun pelanggan.</div>';
+        return;
+      }
+
+      const sorted = [...customers].sort((a, b) => String(b.name || '').localeCompare(String(a.name || '')));
+
+      const NEW_DAYS = 7;
+
+      function userBadge(u) {
+        const role = u?.role || 'user';
+        if (role === 'admin') {
+          return { label: '👑 Admin', cls: 'badge' };
+        }
+
+        const createdAt = Number(u?.createdAt || 0);
+        const isNew = createdAt > 0 && (Date.now() - createdAt) <= NEW_DAYS * 24 * 60 * 60 * 1000;
+        return isNew ? { label: '⭐ Pelanggan Baru', cls: 'badge' } : { label: '✨ Pelanggan Lama', cls: 'badge' };
+      }
+
+      box.innerHTML = sorted.map(u => {
+        const b = userBadge(u);
+        return `
+          <div class="cart-item" style="flex-direction:column; gap:8px; align-items:stretch;">
+            <div style="display:flex; justify-content:space-between; gap:12px;">
+              <div>
+                <b>${u.name || '-'} </b>
+                <div class="small">${u.email || '-'}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge">${b.label}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const y = document.getElementById('year');
+      if (y) y.textContent = String(new Date().getFullYear());
+
+      const adminMsg = document.getElementById('adminMsg');
+      const sessionRaw = localStorage.getItem(LS_ADMIN_SESSION_KEY);
+
+      if (!sessionRaw) {
+        if (adminMsg) {
+          adminMsg.style.display = 'block';
+          adminMsg.className = 'msg is-danger';
+          adminMsg.textContent = 'Akses ditolak. Silakan login admin dulu.';
+        }
+        setTimeout(() => window.location.href = './admin-login.html', 900);
+        return;
+      }
+
+      renderCustomers();
+    });
+  </script>
+</body>
+</html>
+

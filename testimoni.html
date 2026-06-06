@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testimoni | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./beranda.html">KRIS DIAMOND STORE</a>
+
+      <nav class="nav">
+        <a href="./beranda.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./testimoni.html">Testimoni</a>
+
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+        <a href="./checkout.html" class="btn btn-primary">Checkout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./beranda.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./testimoni.html">Testimoni</a>
+
+      <a href="./login.html">Login</a>
+      <a href="./checkout.html">Checkout</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="page-header" style="margin-bottom:8px;">
+        <div>
+          <div id="backToHomeOrAdminWrap" style="display:none; margin-bottom:10px;">
+<a id="backToHomeOrAdminLink" class="btn btn-ghost" href="./index.html">← Kembali ke Halaman Utama</a>
+          </div>
+          <h1>Testimoni Pelanggan</h1>
+          <p class="lead" style="margin-top:8px;">Kata mereka yang sudah percaya dan repeat order.</p>
+        </div>
+        <div class="page-actions" style="min-width:unset;">
+<button class="btn btn-ghost" type="button" id="btnToAdminTestimoni">Admin: Kelola Testimoni</button>
+<script>
+  (function(){
+    const btn = document.getElementById('btnToAdminTestimoni');
+    if(!btn) return;
+
+    function isAdmin(){
+      try{
+        const rawFlag = localStorage.getItem('isAdmin');
+        if(rawFlag === 'true') return true;
+        const sess = localStorage.getItem('diamond_store_admin_session_v1');
+        return !!sess;
+      }catch{ return false; }
+    }
+
+    // hide for non-admin
+    if(!isAdmin()){
+      btn.style.display = 'none';
+      return;
+    }
+
+    btn.addEventListener('click', ()=>{
+      window.location.href = './testimoni-admin.html';
+    });
+  })();
+</script>
+
+
+
+
+        </div>
+      </div>
+
+      <div id="testimoniGrid" class="product-grid" style="margin-top:18px;">
+        <!-- Diisi oleh script.js -->
+      </div>
+
+      <div id="testimoniEmpty" class="msg" style="display:none; margin-top:18px;">
+        Belum ada testimoni.
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./testimoni.html">Testimoni</a>
+        <a href="./login.html">Login</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+
+        <div>Email: <a href="mailto:krisdesign0@gmail.com">krisdesign0@gmail.com</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
+

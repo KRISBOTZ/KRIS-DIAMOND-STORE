@@ -1,0 +1,9 @@
+- [ ] Update badge/title pelanggan di customers.html:
+  - Bedakan pelanggan baru vs lama menggunakan field "createdAt" (default lama jika tidak ada)
+  - Tampilkan ikon/bintang/label berbeda (mis: ⭐ Pelanggan Baru, ✨ Pelanggan Lama)
+- [ ] Update badge/title pelanggan di admin.html:
+  - Gunakan helper yang sama (createdAt => baru)
+  - Tambahkan label admin (mis: 👑 Admin) untuk akun role "admin"
+  - Pastikan pelanggan yang ditampilkan hanya non-admin atau juga admin sesuai kebutuhan tampilan
+- [ ] Tambahkan helper fungsi di script tag masing-masing halaman (tidak mengubah script.js) untuk menentukan kategori baru/lama
+- [ ] Jalankan quick check: buka customers.html dan admin.html setelah login admin, pastikan badge tampil benar

@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">KRIS DIAMOND STORE</a>
+      <nav class="nav">
+        <a href="./index.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./testimoni.html">Testimoni</a>
+        <a href="./faq.html" class="btn btn-ghost">FAQ</a>
+
+        <!-- Hapus tombol Login karena user admin sudah masuk -->
+        <a href="./admin.html" class="btn btn-ghost" aria-current="page" style="display:none;">Admin</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./index.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./testimoni.html">Testimoni</a>
+      <a href="./faq.html">FAQ</a>
+
+
+      <!-- Hapus tombol Login di mobile -->
+      <a href="./admin.html">Admin</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="page-header">
+        <div>
+          <h1>Panel Admin</h1>
+          <p>Lihat pesanan pelanggan (demo via localStorage).</p>
+        </div>
+        <div class="page-actions" style="min-width:unset; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-ghost" type="button" id="btnAdminLogout">Logout</button>
+
+          <button class="btn btn-ghost" type="button" id="btnTabCustomers">👥 Akun Pelanggan</button>
+          <button class="btn btn-ghost" type="button" id="btnTabOrdersPending">⏳ Pesanan Belum Selesai</button>
+          <button class="btn btn-ghost" type="button" id="btnTabOrdersDone">✅ Pesanan Selesai</button>
+        </div>
+      </div>
+
+      <div class="auth-wrap" style="grid-template-columns: 1fr;">
+          <div class="auth-card" id="adminBox">
+          <h2 style="margin-top:0" id="adminTitle">Memuat...</h2>
+          <div class="small" id="adminEmailHint" style="margin-top:6px; opacity:.85;">Email admin: <b>krisdesign0@gmail.com</b></div>
+
+          <div class="divider"></div>
+
+          <div id="adminMsg" class="msg" role="status" aria-live="polite" style="display:none"></div>
+
+          <div class="checkout-card" style="padding:14px; border-radius:18px; margin-top:14px;">
+            <h2 class="section-title" style="margin-top:0">Daftar Akun Pelanggan</h2>
+            <div class="cart-items" id="customersList"></div>
+          </div>
+
+          <div class="checkout-card" style="padding:14px; border-radius:18px; margin-top:14px;" id="orders">
+            <h2 class="section-title" style="margin-top:0">Daftar Pesanan</h2>
+
+            <div class="divider" style="margin:10px 0"></div>
+
+            <h3 style="margin:0 0 10px; font-size:16px; opacity:.95">Belum Selesai</h3>
+            <div class="cart-items" id="ordersListPending"></div>
+
+            <div class="divider" style="margin:10px 0"></div>
+
+            <h3 style="margin:0 0 10px; font-size:16px; opacity:.95">Sudah Selesai</h3>
+            <div class="cart-items" id="ordersListDone"></div>
+
+            <div class="divider"></div>
+            <button class="btn btn-ghost" type="button" id="btnClearOrders">Hapus Semua Pesanan (demo)</button>
+          </div>
+
+          <div class="checkout-card" style="padding:14px; border-radius:18px; margin-top:14px;">
+            <h2 class="section-title" style="margin-top:0">Fitur Admin</h2>
+            <div class="small" style="margin-top:6px; opacity:.85;">Klik tombol untuk menjalankan fitur demo.</div>
+            <div class="divider" style="margin:12px 0"></div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn btn-primary" type="button" id="btnAdminRefresh">🔄 Refresh Data</button>
+              <button class="btn btn-ghost" type="button" id="btnAdminShowCustomers">👥 Tampilkan Akun Pelanggan</button>
+              <button class="btn btn-ghost" type="button" id="btnAdminShowPending">⏳ Tampilkan Pesanan Belum Selesai</button>
+              <button class="btn btn-ghost" type="button" id="btnAdminShowDone">✅ Tampilkan Pesanan Selesai</button>
+            </div>
+          </div>
+
+          <div class="checkout-card" style="padding:14px; border-radius:18px; margin-top:14px;">
+            <h2 class="section-title" style="margin-top:0">Top Produk (Pembelian Terbanyak)</h2>
+            <div class="small" style="margin-top:6px; opacity:.85;">Berdasarkan total qty item yang dibeli di order.</div>
+            <div class="divider" style="margin:12px 0"></div>
+            <div class="cart-items" id="topProductsAdminList"></div>
+
+          </div>
+
+          <div class="checkout-card" style="padding:14px; border-radius:18px; margin-top:14px;" id="productAdminCard">
+
+
+            <h2 class="section-title" style="margin-top:0">Manajemen Produk</h2>
+            <div class="small" style="margin-top:6px; opacity:.85;">Tambahkan produk baru, edit/hapus produk, dan pantau top produk berdasarkan jumlah pembelian (qty item). Data disimpan di browser ini.</div>
+            <div class="divider" style="margin:12px 0"></div>
+
+            <form class="form" id="addProductForm">
+              <input type="hidden" id="editProductId" />
+
+              <div>
+                <label class="label" for="productGame">Pilih Game (produk ini untuk game mana?)</label>
+                <select id="productGame" class="input" required aria-describedby="productGameHelp">
+                  <option value="ff">Free Fire</option>
+                  <option value="ml">Mobile Legends</option>
+                </select>
+                <div id="productGameHelp" class="small" style="margin-top:6px; opacity:.85;">Tip: game yang dipilih akan dipakai saat harga/produk ditampilkan di halaman Produk.</div>
+              </div>
+
+              <div>
+                <label class="label" for="productName">Nama produk</label>
+                <input id="productName" class="input" type="text" placeholder="Contoh: Free Fire Diamond 100" required />
+              </div>
+              <div>
+                <label class="label" for="productDesc">Deskripsi</label>
+                <input id="productDesc" class="input" type="text" placeholder="Contoh: Paket 100 Diamond" required />
+              </div>
+              <div style="display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px;">
+                <div>
+                  <label class="label" for="productPrice">Harga</label>
+                  <input id="productPrice" class="input" type="number" min="0" step="100" placeholder="15000" required />
+                </div>
+                <div>
+                  <label class="label" for="productDiamond">Diamond</label>
+                  <input id="productDiamond" class="input" type="number" min="0" step="1" placeholder="100" />
+                </div>
+              </div>
+              <div style="display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px;">
+                <div>
+                  <label class="label" for="productBonus">Bonus</label>
+                  <input id="productBonus" class="input" type="number" min="0" step="1" placeholder="0" />
+                </div>
+                <div>
+                  <label class="label" for="productThumb">Thumbnail URL</label>
+                  <input id="productThumb" class="input" type="text" placeholder="./images/ff.png" />
+                </div>
+              </div>
+              <div>
+                <label class="label" for="productBadges">Badge</label>
+                <input id="productBadges" class="input" type="text" placeholder="100 DF, Promo" />
+              </div>
+              <button class="btn btn-primary" type="submit" id="btnSubmitProduct">➕ Tambah Produk</button>
+              <button class="btn btn-ghost" type="button" id="btnCancelEditProduct" style="display:none;">Batal Edit</button>
+            </form>
+
+            <div class="divider" style="margin:16px 0;"></div>
+
+            <div class="small" style="margin-bottom:10px; opacity:.85;">Produk teratas berdasarkan jumlah pembelian (qty item)</div>
+            <div class="cart-items" id="topProductsAdminList"></div>
+
+            <div class="divider" style="margin:16px 0;"></div>
+
+
+            <div id="productAdminMsg" class="msg" role="status" aria-live="polite" style="display:none; margin-top:12px;"></div>
+
+            <div class="divider" style="margin:12px 0"></div>
+
+            <div class="small" style="margin-bottom:10px; opacity:.85;">Daftar produk dan pengaturan harga.</div>
+            <div class="cart-items" id="productsAdminList"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+        <a href="./faq.html">FAQ</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script src="./script.js"></script>
+  <script>
+    const LS_ADMIN_SESSION_KEY = 'diamond_store_admin_session_v1';
+    const LS_PRODUCTS_KEY = 'diamond_store_products_v1';
+
+    const LS_ORDERS_KEY = 'diamond_store_orders_v1';
+
+    function moneyIDR(n) {
+      const num = Number(n) || 0;
+      return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    function getOrders() {
+      try {
+        return JSON.parse(localStorage.getItem(LS_ORDERS_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setOrders(items) {
+      localStorage.setItem(LS_ORDERS_KEY, JSON.stringify(items));
+    }
+
+    const LS_USERS_KEY = 'diamond_store_users_v1';
+
+    function getUsers() {
+      try {
+        return JSON.parse(localStorage.getItem(LS_USERS_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function renderCustomers() {
+      const box = document.getElementById('customersList');
+      if (!box) return;
+
+      const users = getUsers();
+      const customers = users.filter(u => (u.role || 'user') !== 'admin');
+
+      if (!customers.length) {
+        box.innerHTML = '<div class="msg">Belum ada akun pelanggan.</div>';
+        return;
+      }
+
+      const sorted = [...customers].sort((a, b) => String(b.name || '').localeCompare(String(a.name || '')));
+
+      const NEW_DAYS = 7;
+
+      function userBadge(u) {
+        const role = u?.role || 'user';
+        if (role === 'admin') {
+          return { label: '👑 Admin', cls: 'badge' };
+        }
+
+        const createdAt = Number(u?.createdAt || 0);
+        const isNew = createdAt > 0 && (Date.now() - createdAt) <= NEW_DAYS * 24 * 60 * 60 * 1000;
+        return isNew ? { label: '⭐ Pelanggan Baru', cls: 'badge' } : { label: '✨ Pelanggan Lama', cls: 'badge' };
+      }
+
+      box.innerHTML = sorted.map(u => {
+        const b = userBadge(u);
+        return `
+          <div class="cart-item" style="flex-direction:column; gap:8px; align-items:stretch;">
+            <div style="display:flex; justify-content:space-between; gap:12px;">
+              <div>
+                <b>${u.name || '-'} </b>
+                <div class="small">${u.email || '-'}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge">${b.label}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderOrders() {
+      const pendingBox = document.getElementById('ordersListPending');
+      const doneBox = document.getElementById('ordersListDone');
+      const orders = getOrders();
+
+      if (!pendingBox || !doneBox) return;
+
+      const pending = orders.filter(o => (o || {}).status !== 'done');
+      const done = orders.filter(o => (o || {}).status === 'done');
+
+      function renderList(box, list, { actionPending = false } = {}) {
+        if (!list.length) {
+          box.innerHTML = '<div class="msg">Tidak ada data.</div>';
+          return;
+        }
+
+        const sorted = [...list].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+        box.innerHTML = sorted.map(o => {
+          const itemsText = (o.items || []).map(it => `• ${it.name} (${it.qty}x)`).join('<br/>');
+          const canSetDone = actionPending;
+
+          return `
+            <div class="cart-item" style="flex-direction:column; gap:8px; align-items:stretch;">
+              <div style="display:flex; justify-content:space-between; gap:12px;">
+                <div>
+                  <b>${o.orderId || '-'} </b>
+                  <div class="small">${o.gameLabel || '-'} • ${o.paymentMethodLabel || '-'}</div>
+                  <div class="small">Kontak: ${o.buyerContact || '-'}</div>
+                </div>
+                <div style="text-align:right;">
+                  <b>${moneyIDR(o.total || 0)}</b>
+                  <div class="small">${o.buyerName || '-'}</div>
+                </div>
+              </div>
+              <div class="small" style="color: rgba(234,240,255,0.7);">
+                ${itemsText}
+                <div style="margin-top:6px;">Catatan: ${o.notes || '-'}</div>
+              </div>
+              <div style="display:flex; gap:10px; margin-top:6px; flex-wrap:wrap;">
+                ${canSetDone ? `<button class="btn btn-primary" type="button" data-setdone="${o.orderId}">Tandai Selesai</button>` : ''}
+                ${!canSetDone ? `<button class="btn btn-ghost" type="button" data-reopen="${o.orderId}">Kembalikan</button>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        if (actionPending) {
+          $all('[data-setdone]').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-setdone');
+              const orders = getOrders();
+              const idx = orders.findIndex(x => x.orderId === id);
+              if (idx >= 0) {
+                orders[idx].status = 'done';
+                setOrders(orders);
+                renderOrders();
+              }
+            });
+          });
+        } else {
+          $all('[data-reopen]').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const id = btn.getAttribute('data-reopen');
+              const orders = getOrders();
+              const idx = orders.findIndex(x => x.orderId === id);
+              if (idx >= 0) {
+                orders[idx].status = 'new';
+                setOrders(orders);
+                renderOrders();
+              }
+            });
+          });
+        }
+      }
+
+      renderList(pendingBox, pending, { actionPending: true });
+      renderList(doneBox, done, { actionPending: false });
+    }
+
+    function getProducts() {
+      try {
+        const raw = localStorage.getItem(LS_PRODUCTS_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setProducts(products) {
+      localStorage.setItem(LS_PRODUCTS_KEY, JSON.stringify(products || []));
+    }
+
+    function renderTopProductsByQty() {
+      const box = document.getElementById('topProductsAdminList');
+      if (!box) return;
+
+      const orders = getOrders();
+      const productMap = new Map(); // productId -> { product, qty }
+
+      const products = getProducts();
+      const prodById = new Map((products || []).map(p => [p.id, p]));
+
+      for (const o of orders) {
+        for (const it of (o.items || [])) {
+          const pid = it.id || '';
+          const key = pid || it.name || '';
+          if (!key) continue;
+
+          const prev = productMap.get(key) || { product: prodById.get(pid) || it, qty: 0 };
+          prev.qty += Number(it.qty) || 0;
+          // update product reference if possible
+          prev.product = prev.product && prev.product.id ? prev.product : (prodById.get(pid) || prev.product);
+          productMap.set(key, prev);
+        }
+      }
+
+      const sorted = Array.from(productMap.values()).sort((a, b) => (b.qty || 0) - (a.qty || 0));
+      const top = sorted.slice(0, 10);
+
+      if (!top.length) {
+        box.innerHTML = '<div class="msg">Belum ada data pembelian.</div>';
+        return;
+      }
+
+      box.innerHTML = top.map(x => {
+        const p = x.product || {};
+        const id = p.id || '';
+        const thumb = p.thumb || p.thumbnail || '';
+        const name = p.name || p.desc || 'Produk';
+        const gameLabel = p.game ? (p.game === 'ff' ? 'Free Fire' : 'Mobile Legends') : '';
+        return `
+          <div class="cart-item" style="flex-direction:column; gap:8px; align-items:stretch;">
+            <div style="display:flex; justify-content:space-between; gap:12px;">
+              <div style="display:flex; gap:12px; align-items:center;">
+                ${thumb ? `<img src="${thumb}" alt="thumb" style="width:44px; height:44px; border-radius:12px; object-fit:cover; background:rgba(255,255,255,0.06)" onerror="this.style.display='none'" />` : ''}
+                <div>
+                  <b>${name}</b>
+                  <div class="small">${gameLabel || (p.gameLabel || '-') || '-'}</div>
+                  ${id ? `<div class="small" style="opacity:.7">ID: ${id}</div>` : ''}
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge">${x.qty} pembelian</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderProductsAdmin() {
+      const box = document.getElementById('productsAdminList');
+      const msg = document.getElementById('productAdminMsg');
+      if (!box) return;
+      const products = getProducts();
+
+      if (!products.length) {
+        box.innerHTML = '<div class="msg">Belum ada produk.</div>';
+        return;
+      }
+
+      box.innerHTML = products.map(p => {
+        const thumb = p.thumb || '';
+        return `
+          <div class="cart-item" style="flex-direction:column; gap:10px; align-items:stretch;">
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+              <div style="display:flex; gap:12px; align-items:center;">
+                ${thumb ? `<img src="${thumb}" alt="thumb" style="width:44px; height:44px; border-radius:12px; object-fit:cover; background:rgba(255,255,255,0.06)" onerror="this.style.display='none'" />` : ''}
+                <div>
+                  <b>${p.name || '-'}</b>
+                  <div class="small">${p.game === 'ff' ? 'Free Fire' : (p.game === 'ml' ? 'Mobile Legends' : '-')} • ${p.desc || '-'}</div>
+                  <div class="small" style="opacity:.75">Harga: ${moneyIDR(p.price || 0)}</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+                <button class="btn btn-ghost" type="button" data-edit="${p.id}">✏️ Edit</button>
+                <button class="btn btn-ghost" type="button" data-delete="${p.id}" style="border-color: rgba(239,68,68,0.4); color: rgba(252,165,165,0.95);">🗑 Hapus</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      $all('[data-edit]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pid = btn.getAttribute('data-edit');
+          startEditProduct(pid);
+        });
+      });
+
+      $all('[data-delete]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pid = btn.getAttribute('data-delete');
+          if (!pid) return;
+          const ok = confirm('Hapus produk ini?');
+          if (!ok) return;
+          const products = getProducts();
+          const next = products.filter(p => p.id !== pid);
+          setProducts(next);
+          if (msg) {
+            msg.style.display = 'block';
+            msg.className = 'msg is-success';
+            msg.textContent = 'Produk berhasil dihapus.';
+            setTimeout(() => { msg.style.display = 'none'; }, 1600);
+          }
+          renderProductsAdmin();
+          renderTopProductsByQty();
+          stopEditProduct();
+        });
+      });
+    }
+
+    function startEditProduct(productId) {
+      const form = document.getElementById('addProductForm');
+      if (!form) return;
+      const products = getProducts();
+      const p = products.find(x => x.id === productId);
+      if (!p) return;
+
+      document.getElementById('editProductId').value = p.id || '';
+      document.getElementById('productGame').value = p.game || 'ff';
+      document.getElementById('productName').value = p.name || '';
+      document.getElementById('productDesc').value = p.desc || '';
+      document.getElementById('productPrice').value = Number(p.price || 0);
+      document.getElementById('productDiamond').value = Number(p.diamond || 0);
+      document.getElementById('productBonus').value = Number(p.bonus || 0);
+      document.getElementById('productThumb').value = p.thumb || '';
+      document.getElementById('productBadges').value = Array.isArray(p.badges) ? p.badges.join(', ') : (p.badges || '');
+
+      const cancel = document.getElementById('btnCancelEditProduct');
+      const submit = document.getElementById('btnSubmitProduct');
+      if (cancel) cancel.style.display = 'inline-flex';
+      if (submit) submit.textContent = '💾 Simpan Perubahan';
+    }
+
+    function stopEditProduct() {
+      const form = document.getElementById('addProductForm');
+      if (!form) return;
+      document.getElementById('editProductId').value = '';
+      document.getElementById('productGame').value = 'ff';
+      document.getElementById('productName').value = '';
+      document.getElementById('productDesc').value = '';
+      document.getElementById('productPrice').value = '';
+      document.getElementById('productDiamond').value = '';
+      document.getElementById('productBonus').value = '';
+      document.getElementById('productThumb').value = '';
+      document.getElementById('productBadges').value = '';
+
+      const cancel = document.getElementById('btnCancelEditProduct');
+      const submit = document.getElementById('btnSubmitProduct');
+      if (cancel) cancel.style.display = 'none';
+      if (submit) submit.textContent = '➕ Tambah Produk';
+    }
+
+    function saveProductFromForm(e) {
+      e.preventDefault();
+
+      const msg = document.getElementById('productAdminMsg');
+      const form = document.getElementById('addProductForm');
+      if (!form) return;
+
+      if (msg) {
+        msg.style.display = 'none';
+      }
+
+      const editingId = document.getElementById('editProductId').value || '';
+      const game = document.getElementById('productGame').value;
+      const name = (document.getElementById('productName').value || '').trim();
+      const desc = (document.getElementById('productDesc').value || '').trim();
+      const price = Number(document.getElementById('productPrice').value || 0);
+      const diamond = Number(document.getElementById('productDiamond').value || 0);
+      const bonus = Number(document.getElementById('productBonus').value || 0);
+      const thumb = (document.getElementById('productThumb').value || '').trim();
+      const badgesRaw = (document.getElementById('productBadges').value || '').trim();
+
+      if (!name || !desc || !Number.isFinite(price)) {
+        if (msg) {
+          msg.style.display = 'block';
+          msg.className = 'msg is-danger';
+          msg.textContent = 'Nama, deskripsi, dan harga wajib diisi.';
+        }
+        return;
+      }
+
+      const badges = badgesRaw ? badgesRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const products = getProducts();
+
+      const buildProductId = () => {
+        // heuristik: pakai game + nama + harga untuk demo
+        const base = `${game}-${name}-${price}`.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-\.]+/g, '');
+        // fallback random agar unik
+        const rand = Math.random().toString(16).slice(2, 6);
+        return `${base}-${rand}`.slice(0, 60);
+      };
+
+      if (editingId) {
+        const idx = products.findIndex(p => p.id === editingId);
+        if (idx >= 0) {
+          const updated = {
+            ...products[idx],
+            game,
+            name,
+            desc,
+            price,
+            diamond: diamond || undefined,
+            bonus: bonus || undefined,
+            thumb: thumb || undefined,
+            badges: badges.length ? badges : undefined,
+          };
+          products[idx] = updated;
+          setProducts(products);
+        }
+      } else {
+        const newId = buildProductId();
+        const newProduct = {
+          id: newId,
+          game,
+          name,
+          desc,
+          price,
+          diamond: game === 'ff' ? (diamond || undefined) : (diamond || undefined),
+          bonus: game === 'ml' ? (bonus || undefined) : (bonus || undefined),
+          thumb: thumb || undefined,
+          badges: badges.length ? badges : undefined,
+        };
+        products.push(newProduct);
+        setProducts(products);
+      }
+
+      if (msg) {
+        msg.style.display = 'block';
+        msg.className = 'msg is-success';
+        msg.textContent = editingId ? 'Produk berhasil diperbarui.' : 'Produk berhasil ditambahkan.';
+        setTimeout(() => { msg.style.display = 'none'; }, 1600);
+      }
+
+      stopEditProduct();
+      renderProductsAdmin();
+      renderTopProductsByQty();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const y = document.getElementById('year');
+      if (y) y.textContent = String(new Date().getFullYear());
+
+      const adminBox = document.getElementById('adminBox');
+      const adminMsg = document.getElementById('adminMsg');
+      const title = document.getElementById('adminTitle');
+
+      const sessionRaw = localStorage.getItem(LS_ADMIN_SESSION_KEY);
+      if (!sessionRaw) {
+        title.textContent = 'Akses ditolak';
+        adminBox.querySelector('#adminMsg').style.display = 'block';
+        adminMsg.className = 'msg is-danger';
+        adminMsg.textContent = 'Silakan login admin dulu.';
+        const btnClear = document.getElementById('btnClearOrders');
+        if (btnClear) btnClear.disabled = true;
+        const btnLogout = document.getElementById('btnAdminLogout');
+        if (btnLogout) btnLogout.style.display = 'none';
+        setTimeout(() => {
+          window.location.href = './admin-login.html';
+        }, 900);
+        return;
+      }
+
+      let session;
+      try { session = JSON.parse(sessionRaw); } catch { session = null; }
+      if (!session) {
+        localStorage.removeItem(LS_ADMIN_SESSION_KEY);
+        window.location.href = './admin-login.html';
+        return;
+      }
+
+      title.textContent = `Halo, ${session.name || 'Admin'}`;
+
+      const infoBox = document.getElementById('adminEmailHint');
+      if (infoBox) infoBox.innerHTML = 'Email admin: <b>krisdesign0@gmail.com</b>';
+
+      // init admin data
+      renderCustomers();
+      renderOrders();
+      renderProductsAdmin();
+      renderTopProductsByQty();
+
+      const btnLogout = document.getElementById('btnAdminLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+          localStorage.removeItem(LS_ADMIN_SESSION_KEY);
+          window.location.href = './login.html';
+        });
+      }
+
+      const btnClear = document.getElementById('btnClearOrders');
+      btnClear && btnClear.addEventListener('click', () => {
+        setOrders([]);
+        renderOrders();
+        renderTopProductsByQty();
+      });
+
+      const btnTabCustomers = document.getElementById('btnTabCustomers');
+      const btnTabOrdersPending = document.getElementById('btnTabOrdersPending');
+      const btnTabOrdersDone = document.getElementById('btnTabOrdersDone');
+
+      btnTabCustomers && btnTabCustomers.addEventListener('click', () => {
+        const el = document.getElementById('customersList');
+        el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        renderCustomers();
+      });
+
+      btnTabOrdersPending && btnTabOrdersPending.addEventListener('click', () => {
+        renderOrders();
+        const el = document.getElementById('ordersListPending');
+        el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      btnTabOrdersDone && btnTabOrdersDone.addEventListener('click', () => {
+        renderOrders();
+        const el = document.getElementById('ordersListDone');
+        el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      const btnAdminRefresh = document.getElementById('btnAdminRefresh');
+      btnAdminRefresh && btnAdminRefresh.addEventListener('click', () => {
+        renderCustomers();
+        renderOrders();
+        renderProductsAdmin();
+        renderTopProductsByQty();
+      });
+
+      const btnAdminShowCustomers = document.getElementById('btnAdminShowCustomers');
+      btnAdminShowCustomers && btnAdminShowCustomers.addEventListener('click', () => {
+        renderCustomers();
+        const el = document.getElementById('customersList');
+        el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      const btnAdminShowPending = document.getElementById('btnAdminShowPending');
+      btnAdminShowPending && btnAdminShowPending.addEventListener('click', () => {
+        renderOrders();
+        const el = document.getElementById('ordersListPending');
+        el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      const btnAdminShowDone = document.getElementById('btnAdminShowDone');
+      btnAdminShowDone && btnAdminShowDone.addEventListener('click', () => {
+        renderOrders();
+        const el = document.getElementById('ordersListDone');
+        el && el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      // product form hooks
+      const form = document.getElementById('addProductForm');
+      form && form.addEventListener('submit', saveProductFromForm);
+
+      const btnCancelEditProduct = document.getElementById('btnCancelEditProduct');
+      btnCancelEditProduct && btnCancelEditProduct.addEventListener('click', () => {
+        stopEditProduct();
+        const msg = document.getElementById('productAdminMsg');
+        if (msg) {
+          msg.style.display = 'none';
+        }
+      });
+
+      // Jika sudah login sebagai admin, pastikan admin session tidak dipakai untuk area user.
+      // Di halaman ini tidak relevan, namun tombol logout harus benar-benar clear session.
+    });
+  </script>
+</body>
+</html>
+

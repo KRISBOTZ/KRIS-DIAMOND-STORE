@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produk | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-page="products">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./beranda.html">KRIS DIAMOND STORE</a>
+
+      <nav class="nav">
+        <a href="./beranda.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./testimoni.html">Testimoni</a>
+
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+        <a href="./checkout.html" class="btn btn-primary">Checkout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./beranda.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./testimoni.html">Testimoni</a>
+      <a href="./sound.html">Sound</a>
+      <a href="./login.html">Login</a>
+      <a href="./checkout.html">Checkout</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="products-hero" role="region" aria-label="Highlight Produk">
+        <div class="products-hero-left">
+          <div class="products-kicker">KRIS DIAMOND STORE</div>
+          <h1>Produk Diamond</h1>
+          <p class="products-sub">
+          
+          <div class="products-stats" aria-label="Keunggulan">
+            <div class="stat-card">
+              <div class="stat-icon">⚡</div>
+              <div>
+                <div class="stat-title">Respon Cepat</div>
+                <div class="stat-sub">Admin siap membantu</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💎</div>
+              <div>
+                <div class="stat-title">Paket Lengkap</div>
+                <div class="stat-sub">FF & ML tersedia</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🔒</div>
+              <div>
+                <div class="stat-title">Aman & Terpercaya</div>
+                <div class="stat-sub">Data di localStorage</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="products-hero-right">
+          <div class="hero-cta-card">
+            <div class="hero-cta-title">Butuh order cepat?</div>
+            <div class="hero-cta-sub">Gunakan search + filter, lalu Checkout.</div>
+            <div class="hero-cta-row">
+              <a class="btn btn-primary" href="./checkout.html">Ke Checkout</a>
+              <a class="btn btn-ghost" href="https://wa.me/6285782554720" target="_blank" rel="noopener">Chat WhatsApp</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <div>
+          <div id="backToHomeOrAdminWrap" style="display:none; margin-bottom:10px;">
+            <a id="backToHomeOrAdminLink" class="btn btn-ghost" href="./index.html">← Kembali ke Halaman Utama</a>
+          </div>
+          <h2 class="products-page-title">Produk</h2>
+          <p class="products-page-sub">Cari nama paket, lalu pilih game melalui chip.</p>
+          <!-- Label admin akan diisi oleh script.js -->
+          <div id="adminStatus" style="margin-top:8px; display:none;">
+            <span class="badge">ADMIN</span>
+          </div>
+        </div>
+
+        <div class="page-actions" style="align-items:center;">
+          <div class="search-wrap">
+            <input id="searchInput" class="input search-input" placeholder="Cari produk... (contoh: 1450, 720, 11 + 1)" />
+            <div class="search-hint">Tip: ketik nomor diamond</div>
+          </div>
+          <button class="btn btn-ghost" type="button" id="adminLogoutBtn" style="display:none; white-space:nowrap;">Logout Admin</button>
+        </div>
+      </div>
+
+      <div class="products-controls">
+        <div class="filters" aria-label="Filter game">
+          <button class="chip is-active" data-filter="all">Semua</button>
+          <button class="chip" data-filter="ff">Free Fire</button>
+          <button class="chip" data-filter="ml">Mobile Legends</button>
+        </div>
+
+        <div class="sort-wrap" aria-label="Urutkan">
+          <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
+            <label class="sort-label" for="sortSelect">Urutkan</label>
+            <span class="sort-help" aria-hidden="true">Harga / waktu</span>
+          </div>
+          <div class="sort-select-wrap">
+            <select id="sortSelect" class="input sort-select" aria-label="Urutkan produk berdasarkan harga dan terbaru">
+              <option value="default" selected>Terbaru</option>
+              <option value="price-asc">Harga Terendah</option>
+              <option value="price-desc">Harga Tertinggi</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid" data-no-sound>
+        <!-- Diisi oleh script.js -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+      </div>
+
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+        <div>Email: <a href="mailto:krisdesign0@gmail.com">krisdesign0@gmail.com</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">KRIS DIAMOND STORE</a>
+      <nav class="nav">
+        <a href="./index.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./faq.html" class="btn btn-ghost">FAQ</a>
+
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+
+
+      </nav>
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./index.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./faq.html">FAQ</a>
+
+      <a href="./login.html">Login</a>
+
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="auth-wrap" style="grid-template-columns: 1fr;">
+        <div class="auth-card">
+          <h1>Login Admin</h1>
+          <p class="muted">Demo admin memakai akun role "admin" di localStorage.</p>
+
+          <form id="adminLoginForm" class="form">
+            <label class="label">Email</label>
+            <input class="input" id="adminEmail" type="email" placeholder="admin@email.com" required />
+
+            <label class="label">Password</label>
+            <input class="input" id="adminPassword" type="password" placeholder="••••••••" required />
+
+            <div class="divider"></div>
+
+            <button class="btn btn-primary" type="submit">Masuk Admin</button>
+            <button class="btn btn-ghost" type="button" id="backToUserLogin">Kembali ke Login</button>
+
+            <div id="adminMsg" class="msg" role="status" aria-live="polite"></div>
+          </form>
+
+          <div class="divider"></div>
+          <p class="muted" style="margin:0;">
+            Untuk demo cepat: buat akun di <b>login.html</b>, lalu isi role admin dengan fitur admin (lihat petunjuk di admin.html).
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+        <a href="./faq.html">FAQ</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script src="./script.js"></script>
+  <script>
+
+    // Admin login handler (standalone, supaya tidak mengganggu script.js utama)
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('adminLoginForm');
+      const msg = document.getElementById('adminMsg');
+      const back = document.getElementById('backToUserLogin');
+
+      back && back.addEventListener('click', () => window.location.href = './login.html');
+
+      form && form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('adminEmail').value.trim().toLowerCase();
+        const password = document.getElementById('adminPassword').value;
+
+        const usersRaw = localStorage.getItem('diamond_store_users_v1');
+        const users = usersRaw ? JSON.parse(usersRaw) : [];
+
+        const u = users.find(x => x.email === email && x.password === password && (x.role === 'admin' || x.role === 'developer'))
+          || (email === 'krisdesign0@gmail.com' && password === 'kris12345'
+            ? { email: 'krisdesign0@gmail.com', name: 'Kris Design', role: 'admin' }
+            : null);
+
+
+        if (!u) {
+          msg.className = 'msg is-danger';
+          msg.textContent = 'Login admin gagal. Pastikan role admin.';
+          return;
+        }
+
+        localStorage.setItem('diamond_store_admin_session_v1', JSON.stringify({ email: u.email, name: u.name, role: 'admin', at: Date.now() }));
+        // Tambahan sesuai spesifikasi: isAdmin=true agar bisa dicek di semua halaman
+        localStorage.setItem('isAdmin', 'true');
+        msg.className = 'msg is-success';
+        msg.textContent = 'Login admin berhasil.';
+        setTimeout(() => window.location.href = './admin.html', 450);
+      });
+    });
+  </script>
+</body>
+</html>
+

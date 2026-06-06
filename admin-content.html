@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Konten | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./admin.html">KRIS DIAMOND STORE</a>
+      <nav class="nav">
+        <a href="./admin.html">Admin</a>
+        <a href="./testimoni-admin.html">Testimoni</a>
+        <a href="./admin-content.html">Konten</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./admin.html">Admin</a>
+      <a href="./testimoni-admin.html">Testimoni</a>
+      <a href="./admin-content.html">Konten</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="page-header">
+        <div>
+          <h1>Edit Konten (Teks)</h1>
+          <p class="lead" style="margin-top:6px;">Override teks halaman menggunakan localStorage.</p>
+        </div>
+        <div class="page-actions" style="min-width:unset; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-ghost" type="button" id="btnBack">← Kembali</button>
+          <button class="btn btn-ghost" type="button" id="btnLogout">Logout Admin</button>
+        </div>
+      </div>
+
+      <div class="auth-wrap" style="grid-template-columns: 1fr;">
+        <div class="auth-card" style="padding:16px;">
+          <div id="msgBox" class="msg" style="display:none" role="status" aria-live="polite"></div>
+
+          <h2 class="section-title" style="margin-top:0; font-size:18px;">Konten yang bisa diubah</h2>
+
+          <form class="form" id="contentForm">
+            <div class="divider" style="margin:12px 0"></div>
+
+            <h3 style="margin:0 0 10px; font-size:16px;">Index (Landing)</h3>
+
+            <div>
+              <label class="label" for="key-indexBannerTitle">Index - Judul banner</label>
+              <input id="key-indexBannerTitle" class="input" type="text" data-edit-key="indexBannerTitle" />
+            </div>
+            <div>
+              <label class="label" for="key-indexBannerSub">Index - Sub banner</label>
+              <input id="key-indexBannerSub" class="input" type="text" data-edit-key="indexBannerSub" />
+            </div>
+
+            <div class="divider" style="margin:14px 0"></div>
+
+            <h3 style="margin:0 0 10px; font-size:16px;">About</h3>
+            <div>
+              <label class="label" for="key-aboutLead">About - paragraf lead</label>
+              <textarea id="key-aboutLead" class="input" rows="3" data-edit-key="aboutLead"></textarea>
+            </div>
+
+            <div class="divider" style="margin:14px 0"></div>
+
+            <h3 style="margin:0 0 10px; font-size:16px;">Beranda</h3>
+            <div>
+              <label class="label" for="key-berandaHeroTitle">Beranda - hero title</label>
+              <input id="key-berandaHeroTitle" class="input" type="text" data-edit-key="berandaHeroTitle" />
+            </div>
+            <div>
+              <label class="label" for="key-berandaHeroDesc">Beranda - hero description</label>
+              <textarea id="key-berandaHeroDesc" class="input" rows="3" data-edit-key="berandaHeroDesc"></textarea>
+            </div>
+            <div>
+              <label class="label" for="key-berandaTrust1">Beranda - trust item 1</label>
+              <input id="key-berandaTrust1" class="input" type="text" data-edit-key="berandaTrust1" />
+            </div>
+            <div>
+              <label class="label" for="key-berandaTrust2">Beranda - trust item 2</label>
+              <input id="key-berandaTrust2" class="input" type="text" data-edit-key="berandaTrust2" />
+            </div>
+            <div>
+              <label class="label" for="key-berandaTrust3">Beranda - trust item 3</label>
+              <input id="key-berandaTrust3" class="input" type="text" data-edit-key="berandaTrust3" />
+            </div>
+
+            <div class="divider" style="margin:14px 0"></div>
+
+            <button class="btn btn-primary" type="submit">💾 Simpan Konten</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+  <script>
+    (function(){
+      const LS_ADMIN_SESSION_KEY = 'diamond_store_admin_session_v1';
+      const LS_CONTENT_KEY = 'diamond_store_page_content_v1';
+
+      function isAdmin(){
+        try{
+          const sess = localStorage.getItem(LS_ADMIN_SESSION_KEY);
+          if(sess) return true;
+          return localStorage.getItem('isAdmin') === 'true';
+        }catch{ return false; }
+      }
+
+      function loadContent(){
+        try{
+          const raw = localStorage.getItem(LS_CONTENT_KEY);
+          return raw ? JSON.parse(raw) : {};
+        }catch{ return {}; }
+      }
+
+      function saveContent(obj){
+        localStorage.setItem(LS_CONTENT_KEY, JSON.stringify(obj||{}));
+      }
+
+      function fmtMsg(ok, text){
+        const box = document.getElementById('msgBox');
+        if(!box) return;
+        box.style.display='block';
+        box.className = 'msg ' + (ok ? 'is-success' : 'is-danger');
+        box.textContent = text;
+        setTimeout(()=>{ box.style.display='none'; }, 1600);
+      }
+
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const year = document.getElementById('year');
+        if(year) year.textContent = String(new Date().getFullYear());
+
+        if(!isAdmin()){
+          alert('Silakan login admin dulu.');
+          window.location.href = './admin-login.html';
+          return;
+        }
+
+        const back = document.getElementById('btnBack');
+        back && back.addEventListener('click', ()=> window.location.href='./admin.html');
+
+        const logout = document.getElementById('btnLogout');
+        logout && logout.addEventListener('click', ()=>{
+          localStorage.removeItem(LS_ADMIN_SESSION_KEY);
+          localStorage.removeItem('isAdmin');
+          window.location.href='./login.html';
+        });
+
+        const form = document.getElementById('contentForm');
+        const inputs = Array.from(document.querySelectorAll('[data-edit-key]'));
+        const current = loadContent();
+
+        // fill inputs with current overrides
+        inputs.forEach(el=>{
+          const key = el.getAttribute('data-edit-key');
+          if(key && current && current[key] != null){
+            el.value = current[key];
+          }
+        });
+
+        form && form.addEventListener('submit', (e)=>{
+          e.preventDefault();
+          const next = loadContent();
+
+          inputs.forEach(el=>{
+            const key = el.getAttribute('data-edit-key');
+            const v = (el.value || '').trim();
+            if(!key) return;
+            // simpan kosong juga? kita simpan apa adanya (kalau kosong -> hapus override)
+            if(v === '') delete next[key];
+            else next[key] = v;
+          });
+
+          saveContent(next);
+          fmtMsg(true, 'Konten berhasil disimpan.');
+
+          // reload halaman terkait
+          setTimeout(()=>{
+            window.location.href='./admin.html';
+          }, 700);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
+

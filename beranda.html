@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beranda Produk | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+<a class="brand" href="./beranda.html">KRIS DIAMOND STORE</a>
+
+      <nav class="nav">
+        <a href="./beranda.html">Beranda</a>
+
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./testimoni.html">Testimoni</a>
+
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+        <a href="./checkout.html" class="btn btn-primary">Checkout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./beranda.html">Beranda</a>
+
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./testimoni.html">Testimoni</a>
+
+      <a href="./login.html">Login</a>
+      <a href="./checkout.html">Checkout</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1 data-edit-key="berandaHeroTitle">Beli Diamond Game</h1>
+          <p data-edit-key="berandaHeroDesc">
+            Layanan jualan <b>Diamond Free Fire</b> dan <b>Mobile Legends</b>.
+            Cepat, aman, dan mudah.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="./products.html">Lihat Produk</a>
+            <a class="btn btn-ghost" href="./checkout.html">Cek Harga & Checkout</a>
+          </div>
+          <div class="trust">
+            <div class="trust-item" data-edit-key="berandaTrust1">⚡ Respon cepat & admin ramah</div>
+            <div class="trust-item" data-edit-key="berandaTrust2">🔒 Transaksi aman (ringkas & jelas)</div>
+            <div class="trust-item" data-edit-key="berandaTrust3">⭐ Terpercaya • banyak repeat order</div>
+
+
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <img src="./images/hero-diamond.png" alt="Diamond" onerror="this.style.display='none'" />
+          <div class="hero-card-body">
+            <h3>Paket Populer</h3>
+
+            <div class="popular-slider" id="popularSlider" aria-label="Slider Paket Populer">
+              <div class="popular-slides">
+                <div class="popular-slide is-active" data-slide="0">
+                  <div class="popular-slide-media">
+                    <img src="./images/ml.png" alt="Paket Populer Mobile Legends" onerror="this.style.display='none'" />
+                  </div>
+                  <div class="popular-slide-caption">
+                    <b>Mobile Legends</b>
+                    <div class="popular-slide-sub">50 / 100 / 300 Diamond</div>
+                  </div>
+                  <a class="btn btn-primary popular-slide-cta" href="./products.html#ml">Order ML</a>
+                </div>
+
+                <div class="popular-slide" data-slide="1">
+                  <div class="popular-slide-media">
+                    <img src="./images/ff.png" alt="Paket Populer Free Fire" onerror="this.style.display='none'" />
+                  </div>
+                  <div class="popular-slide-caption">
+                    <b>Free Fire</b>
+                    <div class="popular-slide-sub">200 / 500 / 1000 Diamond</div>
+                  </div>
+                  <a class="btn btn-primary popular-slide-cta" href="./products.html#ff">Order FF</a>
+                </div>
+              </div>
+
+              <div class="popular-controls">
+                <button class="popular-btn" type="button" aria-label="Sebelumnya" id="popularPrev">‹</button>
+                <div class="popular-dots" id="popularDots" role="tablist" aria-label="Pilih slide"></div>
+                <button class="popular-btn" type="button" aria-label="Berikutnya" id="popularNext">›</button>
+              </div>
+            </div>
+
+            <a class="btn btn-primary popular-order" href="./products.html">Order Sekarang</a>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section">
+      <div id="backToHomeOrAdminWrap" style="display:none; margin-bottom:12px;">
+<a id="backToHomeOrAdminLink" class="btn btn-ghost" href="./index.html">← Kembali ke Halaman Utama</a>
+      </div>
+      <h2 class="section-title">Kenapa Pilih Kami?</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🛡️</div>
+          <h3>Transaksi Aman</h3>
+          <p>Sistem checkout jelas. Data pesanan tercatat.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🚚</div>
+          <h3>Pengiriman Cepat</h3>
+          <p>Proses order biasanya singkat (tergantung antrian).</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💬</div>
+          <h3>CS Ramah</h3>
+          <p>Ada panduan pengisian ID dan role.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2 class="section-title">Produk Unggulan</h2>
+      <div class="product-grid" id="productGrid">
+        <!-- Diisi oleh script.js -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+
+        <div>Email: <a href="mailto:krisdesign0@gmail.com">krisdesign0@gmail.com</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
+
+

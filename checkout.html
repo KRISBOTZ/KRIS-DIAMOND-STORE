@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">KRIS DIAMOND STORE</a>
+
+      <nav class="nav">
+        <a href="./index.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+        <a href="./checkout.html" class="btn btn-primary">Checkout</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./index.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+
+      <a href="./login.html">Login</a>
+      <a href="./checkout.html">Checkout</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="page-header">
+        <div>
+          <h1>Checkout</h1>
+          <p>Simulasi proses pesanan (tanpa server).</p>
+        </div>
+      </div>
+
+      <div class="checkout-grid">
+        <div class="checkout-card">
+          <h2 class="section-title" style="margin-top:0">Data Pembeli</h2>
+
+          <form id="checkoutForm" class="form">
+            <label class="label">Nama</label>
+            <input class="input" id="buyerName" type="text" placeholder="Nama" required />
+
+            <label class="label">Email / No. HP</label>
+            <input class="input" id="buyerContact" type="text" placeholder="email atau nomor HP" required />
+
+            <div class="game-picker-wrap">
+              <label class="label" for="gameSelect">Pilih Game</label>
+            <div class="game-picker" role="radiogroup" aria-label="Pilih game">
+                <label class="game-option" data-game="ff">
+                  <input type="radio" name="gameSelectUI" class="game-radio" value="ff" required />
+                  <span class="game-badge">
+                    <img src="./images/ff.png" alt="Free Fire" />
+                    <span class="game-badge-title">Free Fire</span>
+                    <span class="game-badge-sub">Diamond Free Fire</span>
+                  </span>
+                </label>
+
+                <label class="game-option" data-game="ml">
+                  <input type="radio" name="gameSelectUI" class="game-radio" value="ml" />
+                  <span class="game-badge">
+                    <img src="./images/ml.png" alt="Mobile Legends" />
+                    <span class="game-badge-title">Mobile Legends</span>
+                    <span class="game-badge-sub">Diamond Mobile Legends</span>
+                  </span>
+                </label>
+              </div>
+
+              <select class="input" id="gameSelect" required style="display:none;">
+
+                <option value="ff">Free Fire</option>
+                <option value="ml">Mobile Legends</option>
+              </select>
+            </div>
+
+            <label class="label">Game ID</label>
+            <input class="input" id="gameId" type="text" placeholder="Contoh: 123456789" required />
+
+            <div id="notesWrap">
+              <label class="label" id="notesLabel">Catatan (opsional)</label>
+              <textarea class="input" id="notes" rows="3" placeholder="Misal: server / role / tambahan"></textarea>
+            </div>
+
+            <input type="hidden" id="gameSelectHidden" />
+
+            <div class="divider"></div>
+
+
+            <label class="label">Metode Pembayaran</label>
+            <div class="payment-choices" role="group" aria-label="Pilih metode pembayaran">
+              <button type="button" class="pay-choice" data-pay="qris" aria-pressed="false">QRIS</button>
+              <button type="button" class="pay-choice" data-pay="gopay" aria-pressed="false">GoPay</button>
+              <button type="button" class="pay-choice" data-pay="dana" aria-pressed="false">DANA</button>
+            </div>
+
+            <select class="input" id="paymentMethod" required style="display:none;">
+              <option value="qris">QRIS</option>
+              <option value="gopay">GoPay</option>
+              <option value="dana">DANA</option>
+            </select>
+
+
+            <div id="qrisFields" style="margin-top:10px; display:none;">
+              <label class="label">QRIS Pembayaran</label>
+              <div class="qris-wrap" aria-live="polite">
+<img id="qrisImage" class="qris-img" src="./images/QRIS.png" alt="QRIS" />
+                <div class="small qris-note">Silakan scan QRIS untuk pembayaran.</div>
+              </div>
+            </div>
+
+            <div id="ewalletFields" style="display:none; margin-top:10px;">
+              <label class="label">Nomor Dana / GoPay</label>
+              <input class="input" id="ewalletNumber" type="text" inputmode="numeric" placeholder="0857-8255-470" value="0857-8255-4720" />
+              <div class="small" style="margin-top:6px; color: rgba(234,240,255,0.7);">Nomor pembayaran: <b>0857-8255-4720</b></div>
+            </div>
+
+
+
+            <button class="btn btn-primary" type="submit">Buat Pesanan</button>
+
+            <div class="msg" id="buyerOrderInfo" style="display:none;">Pesanan akan tersimpan untuk admin (demo).</div>
+            <button class="btn btn-ghost" type="button" id="clearCart">Kosongkan Keranjang</button>
+
+            <div class="divider"></div>
+
+            <div id="paymentProofWrap" style="display:none;">
+              <h3 style="margin:0 0 10px;">Tandai Selesai & Kirim Bukti Transfer</h3>
+              <p class="lead" style="margin:0 0 10px;">Setelah transfer, upload screenshot tanda bukti pembayaran.</p>
+
+              <label class="label" for="paymentScreenshot">Screenshot bukti pembayaran</label>
+              <input class="input" id="paymentScreenshot" type="file" accept="image/*" />
+
+              <button class="btn btn-primary" type="button" id="submitProofToWA" disabled>Checkout via WhatsApp Admin</button>
+            </div>
+
+          </form>
+
+          <div id="checkoutMsg" class="msg" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="checkout-card">
+          <h2 class="section-title" style="margin-top:0">Ringkasan Pesanan</h2>
+
+          <div class="cart-items" id="cartItems"></div>
+
+          <div class="totals">
+            <div class="totals-row">
+              <span>Total</span>
+              <b id="cartTotal">Rp 0</b>
+            </div>
+            <div class="totals-row muted">
+              <span>Biaya admin</span>
+              <b id="adminFee">Rp 0</b>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="order-actions">
+            <button class="btn btn-ghost" type="button" id="sendToWA" disabled>Chat WhatsApp untuk bayar (QRIS/GoPay/Dana)</button>
+
+          </div>
+
+          <div class="help">
+            <h3>Petunjuk</h3>
+            <ul class="mini-list">
+              <li>Pilih produk dulu di halaman Produk.</li>
+              <li>Checkout akan mengambil item dari keranjang (localStorage).</li>
+              <li>Setelah buat pesanan, tombol WhatsApp akan aktif.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+
+        <div>Email: <a href="mailto:krisdesign0@gmail.com">krisdesign0@gmail.com</a></div>
+
+      </div>
+    </div>
+  </footer>
+
+
+
+  <script src="./payment.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
+
+

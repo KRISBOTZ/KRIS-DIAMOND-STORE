@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil | KRIS DIAMOND STORE</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./index.html">KRIS DIAMOND STORE</a>
+      <nav class="nav">
+        <a href="./index.html">Beranda</a>
+        <a href="./products.html">Produk</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./faq.html" class="btn btn-ghost">FAQ</a>
+        <a href="./login.html" class="btn btn-ghost" data-auth-login>Login</a>
+        <a href="./login.html" class="btn btn-primary" data-auth-profile>Profil</a>
+
+      </nav>
+      <button class="nav-toggle" aria-label="Buka menu" id="navToggle">☰</button>
+    </div>
+
+    <div class="mobile-nav" id="mobileNav" hidden>
+      <a href="./index.html">Beranda</a>
+      <a href="./products.html">Produk</a>
+      <a href="./about.html">Tentang</a>
+      <a href="./faq.html">FAQ</a>
+      <a href="./login.html" data-mobile-auth-login>Login</a>
+      <a href="./login.html" data-mobile-auth-profile>Profil</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="container section">
+      <div class="page-header">
+        <div>
+          <h1>Profil</h1>
+          <p>Kelola data akun kamu.</p>
+        </div>
+        <div class="page-actions" style="min-width:unset;">
+          <button class="btn btn-ghost" type="button" id="btnProfileBack">Kembali</button>
+        </div>
+      </div>
+
+      <div class="auth-wrap" style="grid-template-columns: 1fr;">
+        <div class="auth-card">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+            <div>
+              <h2 style="margin-top:0" id="profileName">-</h2>
+              <div class="small" id="profileEmail">-</div>
+            </div>
+
+            <div style="text-align:right;">
+              <div class="small" style="opacity:.85; margin-bottom:8px;">Foto profil</div>
+              <div style="width:92px; height:92px; border-radius:20px; background:rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid rgba(255,255,255,0.12);">
+                <img id="profileImagePreview" src="" alt="Foto profil" style="max-width:100%; max-height:100%; display:none;" />
+                <div id="profileImagePlaceholder" style="opacity:.7;">Tanpa foto</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <form class="form" id="profileForm">
+            <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
+              <div>
+                <label class="label">Email (read only)</label>
+                <input class="input" id="profileEmailInput" type="email" readonly />
+              </div>
+
+              <div>
+                <label class="label" for="newPassword">Ubah password</label>
+                <input class="input" id="newPassword" type="password" placeholder="Isi jika ingin ubah password" />
+              </div>
+
+              <div>
+                <label class="label" for="newPassword2">Konfirmasi password</label>
+                <input class="input" id="newPassword2" type="password" placeholder="Ulangi password baru" />
+              </div>
+
+              <div>
+                <label class="label" for="profileImageUrl">Ubah foto profil (URL gambar)</label>
+                <input class="input" id="profileImageUrl" type="text" placeholder="Contoh: ./images/profil.png" />
+              </div>
+
+              <div>
+                <button class="btn btn-primary" type="submit">Simpan Perubahan</button>
+              </div>
+
+              <div class="divider"></div>
+
+              <div>
+                <button class="btn btn-ghost" type="button" id="btnCustomerLogout">Logout</button>
+              </div>
+
+              <div id="profileMsg" class="msg" role="status" aria-live="polite" style="display:none"></div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">KRIS DIAMOND STORE</div>
+        <div class="footer-note">© <span id="year"></span> Semua hak dilindungi.</div>
+      </div>
+      <div class="footer-links">
+        <a href="./about.html">Tentang</a>
+        <a href="./products.html">Produk</a>
+        <a href="./login.html">Login</a>
+        <a href="./faq.html">FAQ</a>
+      </div>
+      <div class="footer-contact">
+        <div>Kontak: <a href="https://wa.me/6285782554720" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div>Instagram: <a href="https://instagram.com/krisdesignreal23" target="_blank" rel="noopener">@krisdesignreal23</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+  <script src="./profile.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const back = document.getElementById('btnProfileBack');
+      back && back.addEventListener('click', () => window.history.length > 1 ? window.history.back() : window.location.href = './products.html');
+
+      // Pastikan tombol Logout benar-benar menghapus session user dan kembali ke login
+      const btnLogout = document.getElementById('btnCustomerLogout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+          try {
+            localStorage.removeItem('diamond_store_auth_session_v1');
+          } catch {}
+          window.location.href = './login.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
