@@ -429,18 +429,10 @@ function initNavbar() {
   mobileNav.hidden = true;
 
   navToggle.addEventListener('click', () => {
+    // toggle menu mobile
     mobileNav.hidden = !mobileNav.hidden;
   });
 
-  // Tutup menu saat tombol "hamburger" diklik (toggle) atau link dipilih.
-  // Pastikan event di-link sekali saja agar tidak bentrok dengan JS lain.
-  if (!navToggle.dataset.navBound) {
-    navToggle.dataset.navBound = '1';
-
-    navToggle.addEventListener('click', () => {
-      mobileNav.hidden = !mobileNav.hidden;
-    });
-  }
 
   document.querySelectorAll('.mobile-nav a').forEach(a => {
     if (a.dataset.navLinkBound) return;
